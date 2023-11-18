@@ -8,7 +8,11 @@ import cors from 'cors';
 
 const app = express();
 
-app.use(cors());
+app.use(
+	cors({
+		origin: '*'
+	})
+);
 app.use(express.json());
 
 Lab5(app);
@@ -16,4 +20,4 @@ ModuleRoutes(app);
 CourseRoutes(app);
 HelloRoutes(app);
 
-app.listen(4000).on('listening', () => console.log('Server is running'));
+app.listen(process.env.PORT || 4000).on('listening', () => console.log('Server is running'));
