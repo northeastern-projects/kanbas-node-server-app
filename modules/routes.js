@@ -1,4 +1,5 @@
 import db from '../Database/index.js';
+
 function ModuleRoutes(app) {
 	app.get('/api/modules', (req, res) => {
 		res.send(db.modules);
@@ -24,4 +25,5 @@ function ModuleRoutes(app) {
 		res.sendStatus(200);
 	});
 }
+
 export default ModuleRoutes;

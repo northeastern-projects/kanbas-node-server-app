@@ -7,7 +7,7 @@ const assignment = {
 	score: 0
 };
 
-const todos = [
+let todos = [
 	{ id: 1, title: 'Task 1', completed: true },
 	{ id: 2, title: 'Task 2', completed: false },
 	{ id: 3, title: 'Task 3', completed: true },
@@ -15,41 +15,65 @@ const todos = [
 ];
 
 const Lab5 = (app) => {
-	app.get('/a5/todos/:id/title/:title', (req, res) => {
-		const { id, title } = req.params;
-		const todo = todos.find((t) => t.id === parseInt(id));
-		todo.title = title;
-		res.json(todos);
-	});
+	// app.get('/a5/todos/:id/title/:title', (req, res) => {
+	// 	const { id, title } = req.params;
+	// 	const todo = todos.find((t) => t.id === parseInt(id));
+	// 	todo.title = title;
+	// 	res.json(todos);
+	// });
 
-	app.get('/a5/todos/:id/delete', (req, res) => {
-		const { id } = req.params;
-		const todo = todos.find((t) => t.id === parseInt(id));
-		todos.splice(todos.indexOf(todo), 1);
-		res.json(todos);
-	});
+	// app.get('/a5/todos/:id/delete', (req, res) => {
+	// 	const { id } = req.params;
+	// 	const todo = todos.find((t) => t.id === parseInt(id));
+	// 	todos.splice(todos.indexOf(todo), 1);
+	// 	res.json(todos);
+	// });
+
+	// app.get('/a5/todos/create', (req, res) => {
+	// 	const newTodo = {
+	// 		id: new Date().getTime(),
+	// 		title: 'New Task',
+	// 		completed: false
+	// 	};
+	// 	todos.push(newTodo);
+	// 	res.json(todos);
+	// });
 
 	app.put('/a5/todos/:id', (req, res) => {
 		const { id } = req.params;
-		const todo = todos.find((t) => t.id === parseInt(id));
-		todo.title = req.body.title;
-		todo.description = req.body.description;
-		todo.due = req.body.due;
-		todo.completed = req.body.completed;
+		let todo = todos.find((t) => t.id === parseInt(id));
+
+		if (!todo) {
+			res.sendStatus(404);
+			return;
+		}
+
+		todos = todos.map((t) => {
+			if (t.id === parseInt(id)) {
+				return {
+					...t,
+					...req.body
+				};
+			}
+			return t;
+		});
+
+		res.json(todos);
 		res.sendStatus(200);
 	});
 
 	app.delete('/a5/todos/:id', (req, res) => {
 		const { id } = req.params;
 		const todo = todos.find((t) => t.id === parseInt(id));
+
 		if (!todo) {
 			res.sendStatus(404);
 			return;
 		}
 
 		todos.splice(todos.indexOf(todo), 1);
-		// res.json(todos);
-		res.sendStatus(204);
+		res.json(todos);
+		res.sendStatus(200);
 	});
 
 	app.post('/a5/todos', (req, res) => {
@@ -61,15 +85,6 @@ const Lab5 = (app) => {
 		res.json(newTodo);
 	});
 
-	app.get('/a5/todos/create', (req, res) => {
-		const newTodo = {
-			id: new Date().getTime(),
-			title: 'New Task',
-			completed: false
-		};
-		todos.push(newTodo);
-		res.json(todos);
-	});
 	app.get('/a5/todos/:id', (req, res) => {
 		const { id } = req.params;
 		const todo = todos.find((todo) => todo.id === parseInt(id));
@@ -100,6 +115,16 @@ const Lab5 = (app) => {
 	app.get('/a5/assignment/title/:newTitle', (req, res) => {
 		const { newTitle } = req.params;
 		assignment.title = newTitle;
+		res.json(assignment);
+	});
+	app.get('/a5/assignment/score/:newScore', (req, res) => {
+		const { newScore } = req.params;
+		assignment.score = newScore;
+		res.json(assignment);
+	});
+	app.get('/a5/assignment/completed/:newCompleted', (req, res) => {
+		const { newCompleted } = req.params;
+		assignment.completed = newCompleted == 'true';
 		res.json(assignment);
 	});
 

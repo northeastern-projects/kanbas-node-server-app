@@ -15,4 +15,5 @@ Lab5(app);
 ModuleRoutes(app);
 CourseRoutes(app);
 HelloRoutes(app);
-app.listen(4000);
+
+app.listen(4000).on('listening', () => console.log('Server is running'));

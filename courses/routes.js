@@ -1,4 +1,5 @@
 import Database from '../Database/index.js';
+
 function CourseRoutes(app) {
 	app.post('/api/courses', (req, res) => {
 		const course = { ...req.body, _id: new Date().getTime().toString() };
@@ -30,4 +31,5 @@ function CourseRoutes(app) {
 		res.sendStatus(204);
 	});
 }
+
 export default CourseRoutes;
